@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: foodlink
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ENABLE_TEST_OTP
+        value: false
