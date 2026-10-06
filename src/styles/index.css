@@ -1,0 +1,275 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-serif: 'Lora', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+}
+
+:root {
+  --bg-app: #F6F8F5;
+  --bg-surface: #FFFFFF;
+  --bg-soft: #EAF3EC;
+  --border-color: #E3E8E2;
+  --text-main: #10231A;
+  --text-muted: #5B6B62;
+  
+  --primary: #0B8F5F;
+  --primary-hover: #09774F;
+  --accent: #F28C1B;
+  --accent-hover: #D97812;
+  --urgent: #DC2626;
+}
+
+.dark {
+  --bg-app: #0E1A14;
+  --bg-surface: #14261D;
+  --bg-soft: #1B3327;
+  --border-color: #234233;
+  --text-main: #F4F7F5;
+  --text-muted: #9AA7A0;
+  
+  --primary: #10A771;
+  --primary-hover: #0B8F5F;
+  --accent: #F28C1B;
+  --accent-hover: #D97812;
+  --urgent: #F87171;
+  color-scheme: dark;
+}
+
+/* Systemic dark mode overrides for the FoodLink green palette */
+.dark,
+.dark body {
+  background-color: #071A12 !important;
+  color: #ECFDF5 !important;
+}
+
+.dark .bg-\[\#FFFBF5\] {
+  background-color: #071A12 !important;
+}
+.dark .bg-\[\#F0FDF8\] {
+  background-color: #071A12 !important;
+}
+
+.dark .bg-white {
+  background-color: #0D2B1E !important;
+}
+
+.dark .bg-\[\#FEF3C7\],
+.dark .bg-\[\#D1FAE5\] {
+  background-color: #134025 !important;
+}
+
+.dark .border-\[\#E7E5E4\],
+.dark .border-\[\#D1FAE5\] {
+  border-color: #1E5C38 !important;
+}
+
+.dark .divide-\[\#E7E5E4\] > :not([hidden]) ~ :not([hidden]),
+.dark .divide-\[\#D1FAE5\] > :not([hidden]) ~ :not([hidden]) {
+  border-color: #1E5C38 !important;
+}
+
+.dark .text-\[\#1C1917\],
+.dark .text-\[\#064E3B\] {
+  color: #ECFDF5 !important;
+}
+
+.dark .text-\[\#78716C\],
+.dark .text-\[\#6B7280\] {
+  color: #9CA3AF !important;
+}
+
+.dark .hover\:bg-\[\#FFFBF5\]:hover,
+.dark .hover\:bg-\[\#F0FDF8\]:hover {
+  background-color: #071A12 !important;
+}
+
+.dark .hover\:bg-\[\#FEF3C7\]:hover,
+.dark .hover\:bg-\[\#D1FAE5\]:hover {
+  background-color: #134025 !important;
+}
+
+.dark .hover\:text-\[\#1C1917\]:hover,
+.dark .hover\:text-\[\#064E3B\]:hover {
+  color: #ECFDF5 !important;
+}
+
+.dark input,
+.dark select,
+.dark textarea {
+  background-color: #0D2B1E !important;
+  color: #ECFDF5 !important;
+  border-color: #1E5C38 !important;
+}
+
+/* Dark mode: sign-out and red-toned elements */
+.dark .text-\[\#DC2626\] {
+  color: #F87171 !important;
+}
+.dark .hover\:bg-\[\#FEF2F2\]:hover {
+  background-color: #450A0A !important;
+}
+
+/* Dark mode scrollbar */
+.dark ::-webkit-scrollbar-thumb {
+  background: #1E5C38;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #2D7A50;
+}
+
+
+/* Accessibility: Visible keyboard focus indicators */
+*:focus-visible {
+  outline: 2px solid #059669;
+  outline-offset: 2px;
+}
+
+html {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  background-color: var(--bg-app);
+}
+
+body {
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6, .font-serif, .font-serif-heading {
+  font-family: 'Lora', Georgia, serif;
+  letter-spacing: -0.015em;
+}
+
+/* Site Container for consistent alignment up to 1600px */
+.site-container {
+  width: 100%;
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+@media (min-width: 640px) {
+  .site-container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+@media (min-width: 1024px) {
+  .site-container {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+@media (min-width: 1440px) {
+  .site-container {
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #A7F3D0;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6EE7B7;
+}
+
+/* Accessibility: Text Size scaling */
+html.text-size-large {
+  font-size: 18px;
+}
+html.text-size-xlarge {
+  font-size: 20px;
+}
+
+/* Accessibility: Reduce Motion */
+html.reduce-motion,
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Accessibility: High Contrast */
+html.high-contrast {
+  filter: contrast(120%);
+}
+
+/* Accessibility: Underline Links */
+html.underline-links a,
+html.underline-links button[data-link="true"],
+html.underline-links .link-underline {
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+}
+
+/* Appearance: Compact Lists */
+html.compact-lists .space-y-4 > * + * {
+  margin-top: 0.6rem !important;
+}
+html.compact-lists .py-4 {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+/* ===== FoodLink Logo Animations ===== */
+@keyframes fl-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.025);
+  }
+}
+.foodlink-logo-pulse {
+  animation: fl-pulse 3.5s ease-in-out infinite;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.group:hover .foodlink-logo-pulse,
+button:hover .foodlink-logo-pulse {
+  transform: scale(1.08) rotate(-2deg);
+}
+
+/* ===== Top Donors Auto-Scrolling Ticker ===== */
+@keyframes foodlink-marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.foodlink-marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: foodlink-marquee 32s linear infinite;
+}
+
+.foodlink-marquee-track:hover,
+.foodlink-marquee-track:focus-within {
+  animation-play-state: paused;
+}
+
+

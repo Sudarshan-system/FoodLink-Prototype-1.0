@@ -1,0 +1,50 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with role, sub-type verification documents, and verification status",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["donor", "recipient", "restaurant", "ngo", "individual_donor"] },
+        "donorType": { "type": "string", "enum": ["restaurant", "individual_event"] },
+        "recipientType": { "type": "string", "enum": ["ngo_shelter"] },
+        "verificationStatus": { "type": "string", "enum": ["pending", "verified", "rejected"] },
+        "verificationDocs": { "type": "object" },
+        "orgName": { "type": "string" },
+        "isDemo": { "type": "boolean" },
+        "phone": { "type": "string" },
+        "city": { "type": "string" },
+        "address": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "role", "orgName", "phone", "city"]
+    },
+    "FoodListing": {
+      "title": "FoodListing",
+      "description": "Surplus food donation listing with safety checklist and verification badges",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "donorId": { "type": "string" },
+        "donorOrg": { "type": "string" },
+        "donorType": { "type": "string" },
+        "verificationStatus": { "type": "string" },
+        "status": { "type": "string", "enum": ["available", "claimed", "completed", "cancelled"] }
+      },
+      "required": ["title", "donorId", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Stores user profiles with verification documents and verification status"
+    },
+    "/listings/{listingId}": {
+      "schema": "FoodListing",
+      "description": "Stores surplus food listings"
+    }
+  }
+}

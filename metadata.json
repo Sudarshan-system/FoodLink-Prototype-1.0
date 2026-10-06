@@ -1,0 +1,6 @@
+{
+  "name": "FoodLink",
+  "description": "Connect surplus prepared meals with local shelters, community kitchens, and pantries instantly with FoodLink.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,62 @@
+{
+  "name": "FoodLink - Surplus Food Rescue Network",
+  "short_name": "FoodLink",
+  "description": "Direct food rescue connecting restaurants, banquet surplus, and verified NGOs across India.",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#2E7D4F",
+  "background_color": "#FAFBF8",
+  "categories": ["food", "social", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Post Surplus Food",
+      "short_name": "Post Surplus",
+      "description": "Kitchen staff quick listing of surplus meals",
+      "url": "/#donor",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Available Surplus",
+      "short_name": "Claim Food",
+      "description": "View and claim meals for your shelter",
+      "url": "/#browse",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Courier Runs",
+      "short_name": "Courier Hub",
+      "description": "Active delivery pickups and route navigation",
+      "url": "/#courier",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "NGO Meal Requests",
+      "short_name": "Meal Requests",
+      "description": "Browse or post reverse meal demands",
+      "url": "/#requests",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

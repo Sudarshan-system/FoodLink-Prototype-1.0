@@ -1,0 +1,135 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users collection: Strictly protected personal profiles & identity documents.
+    // Readable and writable only by the account owner or verified platform administrator.
+    match /users/{userId} {
+      allow read: if request.auth != null && (
+        request.auth.uid == userId ||
+        request.auth.token.admin == true
+      );
+      allow write: if request.auth != null && (
+        request.auth.uid == userId ||
+        request.auth.token.admin == true
+      );
+    }
+
+    // Helper predicates for AI safety assessment integrity
+    function clientDoesNotSetSafetyVerdict() {
+      return !('safetyVerdict' in request.resource.data) &&
+             !('safetyScore' in request.resource.data) &&
+             !('safetyReasons' in request.resource.data) &&
+             !('safetyMissingInfo' in request.resource.data);
+    }
+
+    function clientDoesNotModifySafetyVerdict() {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny([
+        'safetyVerdict',
+        'safetyScore',
+        'safetyReasons',
+        'safetyMissingInfo'
+      ]);
+    }
+
+    // Non-owners (recipients/couriers) are only permitted to update status transition and fulfillment keys
+    function nonOwnerUpdateKeysAllowed() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+        'status',
+        'claimedAt',
+        'claimedBy',
+        'claimingOrgId',
+        'claimingOrgName',
+        'handoffCode',
+        'completedAt',
+        'volunteerCourierId',
+        'volunteerCourierName',
+        'handoffCodeEntered',
+        'courierCompletedAt',
+        'courierLiveStatus',
+        'expiredAt',
+        'pickupHandshakeCode',
+        'pickupVerifiedAt',
+        'pickupVerifiedBy',
+        'deliveryHandshakeCode',
+        'deliveryVerifiedAt',
+        'deliveryVerifiedBy',
+        'handshakeType'
+      ]);
+    }
+
+    // Food surplus listings: Publicly discoverable
+    match /listings/{listingId} {
+      allow read: if true;
+      allow create: if request.auth != null && (
+        request.auth.token.admin == true ||
+        (
+          (request.resource.data.donorId == request.auth.uid || request.resource.data.isDemo == true) &&
+          clientDoesNotSetSafetyVerdict()
+        )
+      );
+      allow update: if request.auth != null && (
+        request.auth.token.admin == true ||
+        (
+          clientDoesNotModifySafetyVerdict() && (
+            resource.data.donorId == request.auth.uid ||
+            // Allow recipients/couriers to update status fields only
+            (
+              (request.resource.data.status in ['claimed', 'in_transit', 'completed', 'cancelled', 'expired']) &&
+              nonOwnerUpdateKeysAllowed()
+            )
+          )
+        )
+      );
+      allow delete: if request.auth != null && (
+        resource.data.donorId == request.auth.uid ||
+        request.auth.token.admin == true
+      );
+    }
+
+    // NGO meal demand requests
+    match /meal_requests/{requestId} {
+      allow read: if true;
+      allow create: if request.auth != null && (
+        request.resource.data.ngoId == request.auth.uid ||
+        request.resource.data.isDemo == true
+      );
+      allow update: if request.auth != null && (
+        resource.data.ngoId == request.auth.uid ||
+        request.auth.token.admin == true
+      );
+      allow delete: if request.auth != null && (
+        resource.data.ngoId == request.auth.uid ||
+        request.auth.token.admin == true
+      );
+    }
+
+    // Opt-in Live Pickup Tracking (strictly scoped to verified donor and recipient of the active pickup)
+    match /pickups/{pickupId} {
+      // Only the donor, recipient, courier, or admin can read live location
+      allow read: if request.auth != null && (
+        resource.data.donorId == request.auth.uid ||
+        resource.data.recipientId == request.auth.uid ||
+        resource.data.courierId == request.auth.uid ||
+        request.auth.token.admin == true
+      );
+      // Only assigned courier or donor (or admin) can create and write location updates
+      allow create, update: if request.auth != null && (
+        request.resource.data.courierId == request.auth.uid ||
+        request.resource.data.donorId == request.auth.uid ||
+        request.auth.token.admin == true
+      );
+      // Auto-cleanup on complete or revocation
+      allow delete: if request.auth != null && (
+        resource.data.courierId == request.auth.uid ||
+        resource.data.donorId == request.auth.uid ||
+        resource.data.recipientId == request.auth.uid ||
+        request.auth.token.admin == true
+      );
+    }
+
+    // Default deny all other paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
